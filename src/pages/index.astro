@@ -1,7 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import {Header} from '../components/header.tsx';
-import Footer from '../components/Footer.astro';
+import {Footer} from '../components/footer.tsx';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/global.css';
 ---
@@ -13,8 +13,7 @@ import '../styles/global.css';
 	</head>
 	<body class="dark">
 		<Header siteTitle={SITE_TITLE} />
-		<main class="container mx-auto px-4 py-12 max-w-4xl">
-			<div class="bg-testgreen text-white">Test color</div>
+		<main class="container mx-auto px-4 py-12 max-w-4xl min-h-screen bg-background">
 
 			<h1>🧑‍🚀 Hello, Astronaut!</h1>
 			<p>

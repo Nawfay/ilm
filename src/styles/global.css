@@ -94,4 +94,18 @@
     @apply prose-headings:font-semibold prose-p:font-serif;
     @apply prose-headings:text-black prose-headings:dark:text-white;
   }
+  
+
+  /* TODO FIX THIS  */
+  strong {
+    color: black;
+    font-weight: bold;
+  }
+
+  .dark strong {
+    color: white;
+  }
+
 }
+
+

@@ -2,13 +2,20 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import {Header} from '../components/header.tsx';
-import Footer from '../components/Footer.astro';
+import {Footer} from '../components/footer.tsx';
 import FormattedDate from '../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
+import { SITE_TITLE } from '@consts';
+import {Breadcrumb} from '../components/crumb.tsx';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props;
+
+const crumbs = [
+  { label: "Home", href: "/" },
+  { label: "Blog", href: "/blog" },
+  { label: title}
+];
 ---
 
 <html lang="en">
@@ -55,13 +62,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		</style>
 	</head>
 
-	<body>
-		<Header siteTitle={title} />
+	<body class="dark">
+		<Header siteTitle={SITE_TITLE} />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				<Breadcrumb crumbs={crumbs} onBack={() => history.back()} />
 				<div class="prose">
 					<div class="title">
 						<div class="date">

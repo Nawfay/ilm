@@ -2,7 +2,6 @@ import { Github, Linkedin, Twitter } from "lucide-react"
 import { RiBlueskyLine } from "react-icons/ri";
 import { Button } from "./button"
 
-
 interface HeaderProps {
   siteTitle: string;
 }
@@ -11,7 +10,9 @@ export function Header({ siteTitle }: HeaderProps) {
   return (
     <header className="border-b ">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-4xl">
-        <h1 className="text-lg font-medium">{siteTitle}</h1>
+        <a href="/">
+          <h1 className="text-lg font-medium">{siteTitle}</h1>
+        </a>
         <div className="flex items-center gap-2">
           {/* <Button variant="ghost" size="icon" asChild>
             <a href="https://www.linkedin.com/in/nawaf-ahmed/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
@@ -30,8 +31,13 @@ export function Header({ siteTitle }: HeaderProps) {
           </Button> */}
 
           <span className="p-2">
-            <a href="">
-                <h3>writing</h3>
+            <a href="/about">
+                <h3>about</h3>
+            </a>
+          </span>
+          <span className="p-2">
+            <a href="/blog">
+                <h3>blog</h3>
             </a>
           </span>
           <span className="p-2">

@@ -1,11 +1,10 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
 import {Header} from '../../components/header.tsx';
-import Footer from '../../components/Footer.astro';
+import {Footer} from '../../components/footer.tsx';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -16,99 +15,35 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+
 	</head>
-	<body>
+	<body class="dark">
 		<Header siteTitle={SITE_TITLE} />
-		<main>
-			<section>
-				<ul>
+			<main class="container mx-auto px-4 py-12 max-w-2xl min-h-screen bg-background">
+				<div class="m-8">
+					<div class="text-xl">
+						<h1 class="text-3xl font-bold pb-4">Blogs</h1>
+						<hr />
+					</div>
+				</div>
+				<section class="space-y-6">
 					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
+					posts.map((post) => (
+						<a
+						href={`/blog/${post.id}/`}
+						class="block rounded-lg p-5 bg-card hover:shadow-md transition duration-200 border border-border hover:border-accent"
+						>
+						<h3 class="text-xl font-semibold flex items-center gap-2">
+							{post.data.title}
+						</h3>
+						<p class="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+							📅 <FormattedDate date={post.data.pubDate} />
+						</p>
+						</a>
+					))
 					}
-				</ul>
-			</section>
-		</main>
+				</section>
+			</main>
 		<Footer />
 	</body>
 </html>
