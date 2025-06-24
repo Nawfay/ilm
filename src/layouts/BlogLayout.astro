@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '@components/BaseHead.astro';
+import {Header} from '@components/header';
+import {Footer} from '@components/footer';
+import FormattedDate from '@components/FormattedDate.astro';
+import { SITE_TITLE } from '@consts';
+import { Breadcrumb } from '@components/crumb';
+import type { Crumb } from '@components/crumb';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, category } = Astro.props;
+
+const crumbs: Crumb[] = [
+  { label: "home", href: "/" },
+  { label: category ?? "unknown", href: `/${category}` },
+  { label: title ?? "untitled" }
+];
+
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			html { opacity: 0; 
+				transition: opacity 0.1s ease;}
+		</style>
+		<script>
+			// Immediately invoked theme setup before hydration
+			(function () {
+				try {
+				const theme = localStorage.getItem("theme");
+				if (theme === "dark") {
+					document.documentElement.classList.add("dark");
+				} else if (theme === "light") {
+					document.documentElement.classList.remove("dark");
+				} else {
+					localStorage.setItem("theme", "dark");
+					document.documentElement.classList.add("dark");
+				}
+				} catch (e) {
+				// fallback to dark if localStorage fails
+				document.documentElement.classList.add("dark");
+				}
+				document.documentElement.style.opacity = '1'; // Show the page after theme setup
+			})();
+			</script>
+	</head>
+
+	<body>
+		<Header siteTitle={SITE_TITLE} client:load/>
+		<Breadcrumb crumbs={crumbs} />
+		<main class="container mx-auto px-4 py-12 max-w-4xl min-h-screen bg-background">
+			<article>
+					<div class="title">
+						<div class="date">
+							<FormattedDate date={pubDate} />
+							{
+								updatedDate && (
+									<div class="last-updated-on">
+										Last updated on <FormattedDate date={updatedDate} />
+									</div>
+								)
+							}
+						</div>
+						<h1>{title}</h1>
+						<hr />
+					</div>
+					<slot />
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,53 @@
+---
+import BaseHead from '@components/BaseHead.astro';
+import { Footer } from '@components/footer';
+import { Header } from '@components/header';
+import { SITE_TITLE } from '@consts';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A minimal blog inspired by pheralb.dev" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			html { opacity: 0; 
+				transition: opacity 0.1s ease;}
+		</style>
+		<script>
+			// Immediately invoked theme setup before hydration
+			(function () {
+				try {
+				const theme = localStorage.getItem("theme");
+				if (theme === "dark") {
+					document.documentElement.classList.add("dark");
+				} else if (theme === "light") {
+					document.documentElement.classList.remove("dark");
+				} else {
+					localStorage.setItem("theme", "dark");
+					document.documentElement.classList.add("dark");
+				}
+				} catch (e) {
+				// fallback to dark if localStorage fails
+				document.documentElement.classList.add("dark");
+				}
+				document.documentElement.style.opacity = '1'; // Show the page after theme setup
+			})();
+			</script>
+
+	</head>
+	<body>
+		<Header siteTitle={SITE_TITLE} client:load />
+		<main class="container mx-auto px-4 py-12 max-w-4xl min-h-screen bg-background">
+            <slot />
+		</main>
+		<Footer />
+	</body>
+
+</html>

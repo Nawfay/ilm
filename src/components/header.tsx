@@ -1,62 +1,56 @@
-import { Github, Linkedin, Twitter } from "lucide-react"
-import { RiBlueskyLine } from "react-icons/ri";
-import { Button } from "./button"
+import { useState } from "react"
+import { Menu, X } from "lucide-react"
+import { Button } from "@components/button"
+import { HEADER_LINKS } from "@consts"
+import { ThemeToggle } from "@components/theme/theme-toggle"
 
 interface HeaderProps {
-  siteTitle: string;
+  siteTitle: string
 }
 
 export function Header({ siteTitle }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
-    <header className="border-b ">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-4xl">
-        <a href="/">
-          <h1 className="text-lg font-medium">{siteTitle}</h1>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4 flex h-16 max-w-4xl items-center justify-between">
+        <a href="/" className="flex items-center space-x-2">
+          <span className="text-lg ">{siteTitle}</span>
         </a>
-        <div className="flex items-center gap-2">
-          {/* <Button variant="ghost" size="icon" asChild>
-            <a href="https://www.linkedin.com/in/nawaf-ahmed/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <Linkedin className="h-4 w-4" />
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
+          {HEADER_LINKS.map(({ label, href }) => (
+            <a key={href} href={href} className="hover:text-primary transition-colors">
+              {label}
             </a>
+          ))}
+          <ThemeToggle />
+        </nav>
+
+        {/* Mobile menu toggle */}
+        <div className="flex md:hidden items-center">
+          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <a href="https://bsky.app/profile/nawfay.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-              <RiBlueskyLine className="h-4 w-4" />
-            </a>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <a href="https://github.com/Nawfay" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <Github className="h-4 w-4" />
-            </a>
-          </Button> */}
-
-          <span className="p-2">
-            <a href="/about">
-                <h3>about</h3>
-            </a>
-          </span>
-          <span className="p-2">
-            <a href="/blog">
-                <h3>blog</h3>
-            </a>
-          </span>
-          <span className="p-2">
-            <a href="">
-                <h3>philosophy</h3>
-            </a>
-          </span>
-          <span className="p-2">
-            <a href="">
-                <h3>pokemon</h3>
-            </a>
-          </span>
-
-
-
-          
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden border-t border-border/40 bg-background">
+          <nav className="flex flex-col px-4 py-4 space-y-3 text-sm font-medium">
+            {HEADER_LINKS.map(({ label, href }) => (
+              <a key={href} href={href} onClick={() => setIsMenuOpen(false)} className="hover:text-primary">
+                {label}
+              </a>
+            ))}
+            <ThemeToggle />
+          </nav>
+        </div>
+      )}
+
+   
     </header>
   )
 }
-

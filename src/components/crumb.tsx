@@ -1,22 +1,21 @@
 import { ArrowLeft } from "lucide-react";
-import { Button } from "./button"; // optional: shadcn/ui button
-import React from "react";
+import { Button } from "./button";
+import type { FC } from "react";
 
-interface Crumb {
+export interface Crumb {
   label: string;
   href?: string;
 }
 
 interface BreadcrumbProps {
   crumbs: Crumb[];
-  onBack?: () => void;
 }
 
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, onBack }) => {
+export const Breadcrumb: FC<BreadcrumbProps> = (props: BreadcrumbProps) => {
+  const { crumbs } = props;
   return (
     <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center space-x-2 text-sm">
-        <div className="flex items-center space-x-1 text-muted-foreground">
+        <div className="flex items-center space-x-1 text-sm text-muted-foreground ">
             {crumbs.map((crumb, index) => (
             <div className="flex items-center" key={index}>
                 {crumb.href ? (
@@ -30,8 +29,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ crumbs, onBack }) => {
             </div>
             ))}
         </div>
-        </div>
-    </div>
+      </div>
   );
 };
 
